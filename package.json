@@ -1,0 +1,10 @@
+{
+  "name": "DutyFinder",
+  "description": "Duty Finder for clink",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.8.6",
+    "socket.io": "^1.0.6"
+  },
+  "devDependencies": {}
+}
