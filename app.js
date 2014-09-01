@@ -2,7 +2,7 @@
 // Modules
 //
 var app    = require('express')();
-var server = require('http').Server(app);
+var server = module.exports = require('http').Server(app);
 var io     = require('socket.io')(server);
 
 //
@@ -27,4 +27,6 @@ io.on('connection', function (socket) {
 //
 // Start Server
 //
-server.listen(3000);
+if (!module.parent) {
+  server.listen(3000);
+}
