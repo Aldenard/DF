@@ -1,14 +1,21 @@
 var app = require('../../app');
 var port = 3001;
+var running = false;
 
 var startServer = function (callback) {
-  app.listen(port, function () {
-    callback();
-  });
+  if (!running) {
+    app.listen(port, function () {
+      running = true;
+      callback();
+    });
+  }
 };
 
 var stopServer = function () {
-  app.close();
+  if (running) {
+    app.close();
+    running = false;
+  }
 };
 
 process.on('exit', function () {
