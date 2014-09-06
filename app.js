@@ -8,7 +8,7 @@ var io     = require('socket.io')(server);
 //
 // Variables
 //
-//var config = require('./config.json');
+var config = require('./config.json');
 
 //
 // Routing
@@ -32,5 +32,6 @@ io.on('connection', function (socket) {
 // Start Server
 //
 if (!module.parent) {
-  server.listen(3000);
+  server.listen(config.port);
+  console.log('start listening port #' + config.port);
 }
