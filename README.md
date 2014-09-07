@@ -1,6 +1,7 @@
 DF
 ==========
 [![Build Status](https://travis-ci.org/Aldenard/DF.svg?branch=master)](https://travis-ci.org/Aldenard/DF)
+[![dependencies](https://david-dm.org/Aldenard/DF.png)](https://david-dm.org/ALdenard/DF)
 
 DF = Duty Finder
 
