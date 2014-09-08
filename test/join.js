@@ -1,5 +1,7 @@
 var expect = require('expect.js'),
-    helper = require('./support/helper');
+    helper = require('./support/helper'),
+    verifyHelper = require('./support/verifyHelper');
+
 var io = require('socket.io-client');
 
 var options = {
@@ -8,17 +10,6 @@ var options = {
 };
 
 var socketURL = 'http://0.0.0.0:' + helper.port;
-
-var verifyParty = function (party, tnum, dnum, hnum) {
-  expect(party).to.be.ok();
-  expect(party.t.current).to.eql(tnum);
-  expect(party.d.current).to.eql(dnum);
-  expect(party.h.current).to.eql(hnum);
-};
-
-var verifyParties = function (num) {
-  expect(helper.getNumberOfParties()).to.eql(num);
-};
 
 describe('Scenario 1 :', function () {
 
@@ -46,8 +37,8 @@ describe('Scenario 1 :', function () {
     it('should create single party', function (done) {
       client.emit('join', {name: 'foo', role: 't'});
       client.on('updated', function (data) {
-        verifyParty(data.party, 1, 0, 0);
-        verifyParties(1);
+        verifyHelper.verifyParty(data.party, 1, 0, 0);
+        verifyHelper.verifyParties(1);
         done();
       });
     });
@@ -84,12 +75,12 @@ describe('Scenario 1 :', function () {
       client2.emit('join', {name: 'bar', role: 't'});
 
       client1.on('updated', function (data) {
-        verifyParty(data.party, 1, 0, 0);
-        verifyParties(1);
+        verifyHelper.verifyParty(data.party, 1, 0, 0);
+        verifyHelper.verifyParties(1);
       });
       client2.on('updated', function (data) {
-        verifyParty(data.party, 1, 0, 0);
-        verifyParties(2);
+        verifyHelper.verifyParty(data.party, 1, 0, 0);
+        verifyHelper.verifyParties(2);
         done();
       });
     });
@@ -99,12 +90,12 @@ describe('Scenario 1 :', function () {
       client2.emit('join', {name: 'bar', role: 'h'});
 
       client1.on('updated', function (data) {
-        verifyParty(data.party, 0, 0, 1);
-        verifyParties(1);
+        verifyHelper.verifyParty(data.party, 0, 0, 1);
+        verifyHelper.verifyParties(1);
       });
       client2.on('updated', function (data) {
-        verifyParty(data.party, 0, 0, 1);
-        verifyParties(2);
+        verifyHelper.verifyParty(data.party, 0, 0, 1);
+        verifyHelper.verifyParties(2);
         done();
       });
     });
@@ -116,17 +107,17 @@ describe('Scenario 1 :', function () {
       var fistTime = true;
       client1.on('updated', function (data) {
         if (firstTime) {
-          verifyParty(data.party, 0, 1, 0);
-          verifyParties(1);
+          verifyHelper.verifyParty(data.party, 0, 1, 0);
+          verifyHelper.verifyParties(1);
           firstTime = false;
         } else {
-          verifyParty(data.party, 0, 2, 0);
-          verifyParties(1);
+          verifyHelper.verifyParty(data.party, 0, 2, 0);
+          verifyHelper.verifyParties(1);
         }
       });
       client2.on('updated', function (data) {
-        verifyParty(data.party, 0, 2, 0);
-        verifyParties(1);
+        verifyHelper.verifyParty(data.party, 0, 2, 0);
+        verifyHelper.verifyParties(1);
         done();
       });
     });
@@ -138,16 +129,16 @@ describe('Scenario 1 :', function () {
       var firstTime = true;
       client1.on('updated', function (data) {
         if (firstTime) {
-          verifyParty(data.party, 1, 0, 0);
-          verifyParties(1);
+          verifyHelper.verifyParty(data.party, 1, 0, 0);
+          verifyHelper.verifyParties(1);
         } else {
-          verifyParty(data.party, 1, 1, 0);
-          verifyParties(1);
+          verifyHelper.verifyParty(data.party, 1, 1, 0);
+          verifyHelper.verifyParties(1);
         }
       });
       client2.on('updated', function (data) {
-        verifyParty(data.party, 1, 1, 0);
-        verifyParties(1);
+        verifyHelper.verifyParty(data.party, 1, 1, 0);
+        verifyHelper.verifyParties(1);
         done();
       });
     });
@@ -192,8 +183,8 @@ describe('Scenario 1 :', function () {
       client3.emit('join', {name: 'fiz', role: 'd'});
       client4.emit('join', {name: 'buz', role: 'h'});
       client4.on('updated', function (data) {
-        verifyParty(data.party, 1, 2, 1);
-        verifyParties(1);
+        verifyHelper.verifyParty(data.party, 1, 2, 1);
+        verifyHelper.verifyParties(1);
         done();
       });
     });
