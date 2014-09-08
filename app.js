@@ -98,8 +98,8 @@ io.on('connection', function (socket) {
         notifyUpdate(newParty);
       }
 
-      // disconnect
-      socket.on('disconnect', function () {
+      // disconnect / leave
+      var leave = function () {
         if (player.party) {
           var party = player.party;
           var index = party[player.role].indexOf(player);
@@ -113,7 +113,9 @@ io.on('connection', function (socket) {
             notifyUpdate(party);
           }
         }
-      });
+      };
+      socket.on('disconnect', leave);
+      socket.on('leave', leave);
     } else {
       socket.emit('joined', {error: 'missing'});
     }
