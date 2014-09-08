@@ -16,6 +16,10 @@ var verifyParty = function (party, tnum, dnum, hnum) {
   expect(party.h.current).to.eql(hnum);
 };
 
+var verifyParties = function (num) {
+  expect(helper.getNumberOfParties()).to.eql(num);
+};
+
 describe('Scenario 1 :', function () {
 
   before(function (done) {
@@ -43,6 +47,7 @@ describe('Scenario 1 :', function () {
       client.emit('join', {name: 'foo', role: 't'});
       client.on('updated', function (data) {
         verifyParty(data.party, 1, 0, 0);
+        verifyParties(1);
         done();
       });
     });
@@ -80,9 +85,11 @@ describe('Scenario 1 :', function () {
 
       client1.on('updated', function (data) {
         verifyParty(data.party, 1, 0, 0);
+        verifyParties(1);
       });
       client2.on('updated', function (data) {
         verifyParty(data.party, 1, 0, 0);
+        verifyParties(2);
         done();
       });
     });
@@ -93,9 +100,11 @@ describe('Scenario 1 :', function () {
 
       client1.on('updated', function (data) {
         verifyParty(data.party, 0, 0, 1);
+        verifyParties(1);
       });
       client2.on('updated', function (data) {
         verifyParty(data.party, 0, 0, 1);
+        verifyParties(2);
         done();
       });
     });
@@ -108,13 +117,16 @@ describe('Scenario 1 :', function () {
       client1.on('updated', function (data) {
         if (firstTime) {
           verifyParty(data.party, 0, 1, 0);
+          verifyParties(1);
           firstTime = false;
         } else {
           verifyParty(data.party, 0, 2, 0);
+          verifyParties(1);
         }
       });
       client2.on('updated', function (data) {
         verifyParty(data.party, 0, 2, 0);
+        verifyParties(1);
         done();
       });
     });
@@ -127,12 +139,15 @@ describe('Scenario 1 :', function () {
       client1.on('updated', function (data) {
         if (firstTime) {
           verifyParty(data.party, 1, 0, 0);
+          verifyParties(1);
         } else {
           verifyParty(data.party, 1, 1, 0);
+          verifyParties(1);
         }
       });
       client2.on('updated', function (data) {
         verifyParty(data.party, 1, 1, 0);
+        verifyParties(1);
         done();
       });
     });
@@ -178,6 +193,7 @@ describe('Scenario 1 :', function () {
       client4.emit('join', {name: 'buz', role: 'h'});
       client4.on('updated', function (data) {
         verifyParty(data.party, 1, 2, 1);
+        verifyParties(1);
         done();
       });
     });

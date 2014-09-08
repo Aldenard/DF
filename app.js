@@ -119,3 +119,7 @@ io.on('connection', function (socket) {
     }
   });
 });
+
+if (app.settings.env === 'test') {
+    module.exports.parties = parties;
+}
