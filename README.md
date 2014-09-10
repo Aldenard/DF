@@ -21,7 +21,7 @@ DF = Duty Finder
 
 ## Data Format
 
-### join
+### Join
 ```js
 {
   name: "name",
