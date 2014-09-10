@@ -5,6 +5,48 @@ DF
 
 DF = Duty Finder
 
+## Events
+
+### Client to Server
+- join
+- leave
+- accept
+
+### Server to Client
+- joined
+- updated
+- matched
+- canceled
+- accepted
+
+## Data Format
+
+### join
+```js
+{
+  name: "name",
+  role: "t, d or h"
+}
+```
+
+
+### Updated
+```js
+{
+  party: {
+    t: {current: 0, accept: 0, require: 1},
+    d: {current: 0, accept: 0, require: 2},
+    h: {current: 0, accept: 0, require: 1}
+  }
+};
+```
+
+### Accepted
+```js
+{
+  players: ["list", "of", "name"]
+}
+```
 
 ## License
 
