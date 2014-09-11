@@ -104,7 +104,7 @@ describe('Scenario 1 :', function () {
       client1.emit('join', {name: 'foo', role: 'd'});
       client2.emit('join', {name: 'bar', role: 'd'});
 
-      var fistTime = true;
+      var firstTime = true;
       client1.on('updated', function (data) {
         if (firstTime) {
           verifyHelper.verifyParty(data.party, 0, 1, 0);
@@ -177,7 +177,7 @@ describe('Scenario 1 :', function () {
       client4.disconnect();
     });
 
-    it('should create single party when they are `t` and `d` nad `d` and `h`', function (done) {
+    it('should create single party when they are `t`, `d`, `d` and `h`', function (done) {
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 'd'});
       client3.emit('join', {name: 'fiz', role: 'd'});
