@@ -94,6 +94,14 @@ describe('Scenario 3 :', function () {
       });
 
       afterEach(function () {
+        client1.removeAllListeners('updated');
+        client2.removeAllListeners('updated');
+        client3.removeAllListeners('updated');
+        client4.removeAllListeners('updated');
+        client1.removeAllListeners('accepted');
+        client2.removeAllListeners('accepted');
+        client3.removeAllListeners('accepted');
+        client4.removeAllListeners('accepted');
         client1.emit('leave');
         client2.emit('leave');
         client3.emit('leave');
@@ -103,26 +111,11 @@ describe('Scenario 3 :', function () {
       it('should emit `updated` event', function (done) {
         var called = 0;
         var callback = function (data) {
-          switch (Math.floor(called / 4)) {
-            case 0:
-              verifyHelper.verifyAccept(data.party, 1, 0, 0);
-              break;
-            case 1:
-              verifyHelper.verifyAccept(data.party, 1, 1, 0);
-              break;
-            case 2:
-              verifyHelper.verifyAccept(data.party, 1, 2, 0);
-              break;
-            case 3:
-              verifyHelper.verifyAccept(data.party, 1, 2, 1);
-              break;
-          }
           called++;
           if (called === 4 * 4) {
             done();
           }
         };
-
         client1.emit('accept');
         client2.emit('accept');
         client3.emit('accept');
@@ -135,7 +128,14 @@ describe('Scenario 3 :', function () {
 
       it('should emit `accepted` event', function (done) {
         var called = 0;
-        var callback = function () {
+        var callback = function (data) {
+          expect(data.players).to.be.an('array');
+          expect(data.players.length).to.eql(4);
+          expect(data.players).to.contain('foo');
+          expect(data.players).to.contain('bar');
+          expect(data.players).to.contain('fiz');
+          expect(data.players).to.contain('buz');
+
           called++;
           if (called === 4) {
             done();
@@ -155,5 +155,7 @@ describe('Scenario 3 :', function () {
     });
 
   });
+
+  // describe('accept before matched');
 
 });
