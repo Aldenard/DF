@@ -155,6 +155,11 @@ io.on('connection', function (socket) {
   // disconnect / leave
   var leave = function () {
     if (player.party) {
+      // canceled
+      if (player.party.matched) {
+        notify(player.party, 'canceled');
+      }
+
       // remove player from party
       var party = player.party;
       var index = party[player.role].indexOf(player);
