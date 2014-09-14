@@ -29,7 +29,8 @@ process.on('exit', function () {
 // Server Internal State
 //
 var getNumberOfParties = function () {
-    return app.parties.length;
+  console.log(app.parties);
+  return app.parties.length;
 };
 
 //
