@@ -123,6 +123,7 @@ io.on('connection', function (socket) {
           party[player.role].push(player);
           player.party = party;
           notifyUpdate(party);
+          break;
         }
       }
       if (!player.party) {
