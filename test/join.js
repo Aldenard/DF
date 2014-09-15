@@ -35,6 +35,7 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create single party', function (done) {
+      console.log('single join should create single party');
       client.emit('join', {name: 'foo', role: 't'});
       client.on('updated', function (data) {
         verifyHelper.verifyParty(data.party, 1, 0, 0);
@@ -71,6 +72,7 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create multiple party when they are `t` and `t`', function (done) {
+      console.log('2 joins should create multiple party when t & t');
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 't'});
 
@@ -86,6 +88,7 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create multiple party when they are `h` and `h`', function (done) {
+      console.log('2 joins should create multiple party when h & h');
       client1.emit('join', {name: 'foo', role: 'h'});
       client2.emit('join', {name: 'bar', role: 'h'});
 
@@ -101,6 +104,7 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create single party when they are `d` and `d`', function (done) {
+      console.log('2 joins should create single party when d & d');
       client1.emit('join', {name: 'foo', role: 'd'});
       client2.emit('join', {name: 'bar', role: 'd'});
 
@@ -123,6 +127,7 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create single party when they are `t` and `d`', function (done) {
+      console.log('2 joins should create single party when t & d');
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 'd'});
 
@@ -178,6 +183,7 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create single party when they are `t`, `d`, `d` and `h`', function (done) {
+      console.log('4 joins should create single party when tddh');
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 'd'});
       client3.emit('join', {name: 'fiz', role: 'd'});
