@@ -46,21 +46,28 @@ describe('Scenario 2 :', function () {
     });
 
     it('should emit update event to remainings', function (done) {
+      var afterLeave = false;
+      var called = 0;
+      var joinUpdateCallback = function () {
+        called++;
+        if (called === 3) {
+          afterLeave = true;
+          client2.emit('leave');
+        }
+      };
+
       client1.emit('join', {name: 'foo', role: 'd'});
       client2.emit('join', {name: 'bar', role: 'd'});
-
-      var afterLeave = false;
       client1.on('updated', function (data) {
         if (afterLeave) {
           verifyHelper.verifyParty(data.party, 0, 1, 0);
-          verifyHelper.verifyParties(1);
+          expect(helper.getNumberOfParties()).to.be(1);
           done();
+        } else {
+          joinUpdateCallback();
         }
       });
-      client2.on('updated', function () {
-        client2.emit('leave');
-        afterLeave = true;
-      });
+      client2.on('updated', joinUpdateCallback);
     });
 
   });
