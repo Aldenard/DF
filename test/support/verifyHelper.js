@@ -8,12 +8,7 @@ var verifyParty = function (party, tnum, dnum, hnum) {
   expect(party.h.current).to.eql(hnum);
 };
 
-var verifyParties = function (num) {
-  expect(helper.getNumberOfParties()).to.eql(num);
-};
-
 //
 // Export
 //
 exports.verifyParty = verifyParty;
-exports.verifyParties = verifyParties;

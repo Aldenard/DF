@@ -101,7 +101,7 @@ describe('Scenario 2 :', function () {
     it('shoule be emit `canceled` event to all player', function (done) {
       var called = 0;
       var callback = function () {
-        verifyHelper.verifyParties(1);
+        expect(helper.getNumberOfParties()).to.be(1);
         called++;
         if (called === 4) {
           done();
