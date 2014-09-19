@@ -88,7 +88,22 @@ describe('Scenario 2 :', function () {
       client2.on('connect', function () { client2.emit('join', {name: 'bar', role: 'd'}); });
       client3.on('connect', function () { client3.emit('join', {name: 'fiz', role: 'd'}); });
       client4.on('connect', function () { client4.emit('join', {name: 'buz', role: 'h'}); });
-      client1.on('matched', done);
+
+      var called = 0;
+      var callback = function () {
+        called++;
+        if (called === 4) {
+          client1.off('matched');
+          client2.off('matched');
+          client3.off('matched');
+          client4.off('matched');
+          done();
+        }
+      };
+      client1.on('matched', callback);
+      client2.on('matched', callback);
+      client3.on('matched', callback);
+      client4.on('matched', callback);
     });
 
     afterEach(function () {
