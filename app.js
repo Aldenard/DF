@@ -123,6 +123,7 @@ io.on('connection', function (socket) {
           party[player.role].push(player);
           player.party = party;
           notifyUpdate(party);
+          break;
         }
       }
       if (!player.party) {
@@ -155,6 +156,11 @@ io.on('connection', function (socket) {
   // disconnect / leave
   var leave = function () {
     if (player.party) {
+      // canceled
+      if (player.party.matched) {
+        notify(player.party, 'canceled');
+      }
+
       // remove player from party
       var party = player.party;
       var index = party[player.role].indexOf(player);

@@ -38,7 +38,7 @@ describe('Scenario 1 :', function () {
       client.emit('join', {name: 'foo', role: 't'});
       client.on('updated', function (data) {
         verifyHelper.verifyParty(data.party, 1, 0, 0);
-        verifyHelper.verifyParties(1);
+        expect(helper.getNumberOfParties()).to.be(1);
         done();
       });
     });
@@ -71,75 +71,154 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create multiple party when they are `t` and `t`', function (done) {
-      client1.emit('join', {name: 'foo', role: 't'});
-      client2.emit('join', {name: 'bar', role: 't'});
+      var objParty1 = null, objParty2 = null;
+      var numParty1 = null, numParty2 = null;
+      var verify = function () {
+        verifyHelper.verifyParty(objParty1, 1, 0, 0);
+        verifyHelper.verifyParty(objParty2, 1, 0, 0);
+        expect(numParty1).to.be(1);
+        expect(numParty2).to.be(2);
+        done();
+      };
 
+      // join first t
+      client1.emit('join', {name: 'foo', role: 't'});
+
+      var called = 0;
       client1.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 1, 0, 0);
-        verifyHelper.verifyParties(1);
+        called++;
+        objParty1 = data.party;
+        numParty1 = helper.getNumberOfParties();
+
+        // join second t
+        client2.emit('join', {name: 'bar', role: 't'});
       });
       client2.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 1, 0, 0);
-        verifyHelper.verifyParties(2);
-        done();
+        called++;
+        objParty2 = data.party;
+        numParty2 = helper.getNumberOfParties();
+        if (called == 2) {
+          verify();
+        }
       });
     });
 
     it('should create multiple party when they are `h` and `h`', function (done) {
-      client1.emit('join', {name: 'foo', role: 'h'});
-      client2.emit('join', {name: 'bar', role: 'h'});
+      var objParty1 = null, objParty2 = null;
+      var numParty1 = null, numParty2 = null;
+      var verify = function () {
+        verifyHelper.verifyParty(objParty1, 0, 0, 1);
+        verifyHelper.verifyParty(objParty2, 0, 0, 1);
+        expect(numParty1).to.be(1);
+        expect(numParty2).to.be(2);
+        done();
+      };
 
+      // join first h
+      client1.emit('join', {name: 'foo', role: 'h'});
+
+      var called = 0;
       client1.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 0, 0, 1);
-        verifyHelper.verifyParties(1);
+        called++;
+        objParty1 = data.party;
+        numParty1 = helper.getNumberOfParties();
+
+        // join second h
+        client2.emit('join', {name: 'bar', role: 'h'});
       });
       client2.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 0, 0, 1);
-        verifyHelper.verifyParties(2);
-        done();
+        called++;
+        objParty2 = data.party;
+        numParty2 = helper.getNumberOfParties();
+        if (called === 2) {
+          verify();
+        }
       });
     });
 
     it('should create single party when they are `d` and `d`', function (done) {
-      client1.emit('join', {name: 'foo', role: 'd'});
-      client2.emit('join', {name: 'bar', role: 'd'});
+      var objParty1 = null, objParty2 = null, objParty3 = null;
+      var numParty1 = null, numParty2 = null, numParty3 = null;
+      var verify = function () {
+        verifyHelper.verifyParty(objParty1, 0, 1, 0);
+        verifyHelper.verifyParty(objParty2, 0, 2, 0);
+        verifyHelper.verifyParty(objParty3, 0, 2, 0);
+        expect(numParty1).to.be(1);
+        expect(numParty2).to.be(1);
+        expect(numParty3).to.be(1);
+        done();
+      };
 
-      var firstTime = true;
+      // join first d
+      client1.emit('join', {name: 'foo', role: 'd'});
+
+      var called = 0;
       client1.on('updated', function (data) {
-        if (firstTime) {
-          verifyHelper.verifyParty(data.party, 0, 1, 0);
-          verifyHelper.verifyParties(1);
-          firstTime = false;
+        called++;
+        if (called === 1) {
+          objParty1 = data.party;
+          numParty1 = helper.getNumberOfParties();
+
+          // join second d
+          client2.emit('join', {name: 'bar', role: 'd'});
         } else {
-          verifyHelper.verifyParty(data.party, 0, 2, 0);
-          verifyHelper.verifyParties(1);
+          objParty2 = data.party;
+          numParty2 = helper.getNumberOfParties();
+        }
+        if (called === 3) {
+          verify();
         }
       });
       client2.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 0, 2, 0);
-        verifyHelper.verifyParties(1);
-        done();
+        called++;
+        objParty3 = data.party;
+        numParty3 = helper.getNumberOfParties();
+        if (called === 3) {
+          verify();
+        }
       });
     });
 
     it('should create single party when they are `t` and `d`', function (done) {
-      client1.emit('join', {name: 'foo', role: 't'});
-      client2.emit('join', {name: 'bar', role: 'd'});
+      var objParty1 = null, objParty2 = null, objParty3 = null;
+      var numParty1 = null, numParty2 = null, numParty3 = null;
+      var verify = function () {
+        verifyHelper.verifyParty(objParty1, 1, 0, 0);
+        verifyHelper.verifyParty(objParty2, 1, 1, 0);
+        verifyHelper.verifyParty(objParty3, 1, 1, 0);
+        expect(numParty1).to.be(1);
+        expect(numParty2).to.be(1);
+        expect(numParty3).to.be(1);
+        done();
+      };
 
-      var firstTime = true;
+      // join t
+      client1.emit('join', {name: 'foo', role: 't'});
+
+      var called = 0;
       client1.on('updated', function (data) {
-        if (firstTime) {
-          verifyHelper.verifyParty(data.party, 1, 0, 0);
-          verifyHelper.verifyParties(1);
+        called++;
+        if (called === 1) {
+          objParty1 = data.party;
+          numParty1 = helper.getNumberOfParties();
+
+          // join d
+          client2.emit('join', {name: 'bar', role: 'd'});
         } else {
-          verifyHelper.verifyParty(data.party, 1, 1, 0);
-          verifyHelper.verifyParties(1);
+          objParty2 = data.party;
+          numParty2 = helper.getNumberOfParties();
+        }
+        if (called === 3) {
+          verify();
         }
       });
       client2.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 1, 1, 0);
-        verifyHelper.verifyParties(1);
-        done();
+        called++;
+        objParty3 = data.party;
+        numParty3 = helper.getNumberOfParties();
+        if (called === 3) {
+          verify();
+        }
       });
     });
   });
@@ -178,15 +257,23 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create single party when they are `t`, `d`, `d` and `h`', function (done) {
+      var called = 0;
+      var callback = function (data) {
+        called++;
+        if (called === 10 /* = 1+ 2 + 3 +  4*/) {
+          verifyHelper.verifyParty(data.party, 1, 2, 1);
+          expect(helper.getNumberOfParties()).to.be(1);
+          done();
+        }
+      };
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 'd'});
       client3.emit('join', {name: 'fiz', role: 'd'});
       client4.emit('join', {name: 'buz', role: 'h'});
-      client4.on('updated', function (data) {
-        verifyHelper.verifyParty(data.party, 1, 2, 1);
-        verifyHelper.verifyParties(1);
-        done();
-      });
+      client1.on('updated', callback);
+      client2.on('updated', callback);
+      client3.on('updated', callback);
+      client4.on('updated', callback);
     });
 
   });
