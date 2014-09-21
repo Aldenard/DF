@@ -26,14 +26,7 @@ describe('Scenario 2 :', function () {
     var client2 = null;
 
     beforeEach(function (done) {
-      var connected = 0;
-      var callback = function () {
-        connected++;
-        if (connected === 2) {
-          done();
-        }
-      };
-
+      var callback = helper.createCallbackHook(2, function () { done(); });
       client1 = io.connect(socketURL, options);
       client2 = io.connect(socketURL, options);
       client1.on('connect', callback);
@@ -47,14 +40,10 @@ describe('Scenario 2 :', function () {
 
     it('should emit update event to remainings', function (done) {
       var afterLeave = false;
-      var called = 0;
-      var joinUpdateCallback = function () {
-        called++;
-        if (called === 3) {
-          afterLeave = true;
-          client2.emit('leave');
-        }
-      };
+      var joinUpdateCallback = helper.createCallbackHook(3, function () {
+        afterLeave = true;
+        client2.emit('leave');
+      });
 
       client1.emit('join', {name: 'foo', role: 'd'});
       client2.emit('join', {name: 'bar', role: 'd'});
@@ -89,17 +78,13 @@ describe('Scenario 2 :', function () {
       client3.on('connect', function () { client3.emit('join', {name: 'fiz', role: 'd'}); });
       client4.on('connect', function () { client4.emit('join', {name: 'buz', role: 'h'}); });
 
-      var called = 0;
-      var callback = function () {
-        called++;
-        if (called === 4) {
-          client1.off('matched');
-          client2.off('matched');
-          client3.off('matched');
-          client4.off('matched');
-          done();
-        }
-      };
+      var callback = helper.createCallbackHook(4, function () {
+        client1.off('matched');
+        client2.off('matched');
+        client3.off('matched');
+        client4.off('matched');
+        done();
+      });
       client1.on('matched', callback);
       client2.on('matched', callback);
       client3.on('matched', callback);
@@ -134,13 +119,7 @@ describe('Scenario 2 :', function () {
     });
 
     it('should remove only leaved player from the party', function (done) {
-      var called = 0;
-      var callback = function () {
-        called++;
-        if (called === 4) {
-          done();
-        }
-      };
+      var callback = helper.createCallbackHook(4, function () { done(); });
 
       client1.emit('accept');
       client2.emit('accept');

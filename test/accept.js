@@ -28,14 +28,7 @@ describe('Scenario 3 :', function () {
     var client4 = null;
 
     beforeEach(function (done) {
-      var connected = 0;
-      var callback = function () {
-        connected++;
-        if (connected === 4) {
-          done();
-        }
-      };
-
+      var callback = helper.createCallbackHook(4, function () { done(); });
       client1 = io.connect(socketURL, options);
       client2 = io.connect(socketURL, options);
       client3 = io.connect(socketURL, options);
@@ -54,14 +47,7 @@ describe('Scenario 3 :', function () {
     });
 
     it('should emit `matched` event when they have suitable role for requirement', function (done) {
-      var called = 0;
-      var callback = function () {
-        called++;
-        if (called === 4) {
-          done();
-        }
-      };
-
+      var callback = helper.createCallbackHook(4, function () { done(); });
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 'd'});
       client3.emit('join', {name: 'fiz', role: 'd'});
@@ -75,14 +61,7 @@ describe('Scenario 3 :', function () {
     describe('and 4 accept', function () {
 
       beforeEach(function (done) {
-        var called = 0;
-        var callback = function () {
-          called++;
-          if (called === 4) {
-            done();
-          }
-        };
-
+        var callback = helper.createCallbackHook(4, function () { done(); });
         client1.emit('join', {name: 'foo', role: 't'});
         client2.emit('join', {name: 'bar', role: 'd'});
         client3.emit('join', {name: 'fiz', role: 'd'});
@@ -109,13 +88,7 @@ describe('Scenario 3 :', function () {
       });
 
       it('should emit `updated` event', function (done) {
-        var called = 0;
-        var callback = function (data) {
-          called++;
-          if (called === 4 * 4) {
-            done();
-          }
-        };
+        var callback = helper.createCallbackHook(4 * 4, function () { done(); });
         client1.emit('accept');
         client2.emit('accept');
         client3.emit('accept');
