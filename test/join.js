@@ -51,14 +51,7 @@ describe('Scenario 1 :', function () {
     var client2 = null;
 
     beforeEach(function (done) {
-      var connected = 0;
-      var callback = function () {
-        connected++;
-        if (connected === 2) {
-          done();
-        }
-      };
-
+      var callback = helper.createCallbackHook(2, function () { done(); });
       client1 = io.connect(socketURL, options);
       client2 = io.connect(socketURL, options);
       client1.on('connect', callback);
@@ -231,14 +224,7 @@ describe('Scenario 1 :', function () {
     var client4 = null;
 
     beforeEach(function (done) {
-      var connected = 0;
-      var callback = function () {
-        connected++;
-        if (connected === 4) {
-          done();
-        }
-      };
-
+      var callback = helper.createCallbackHook(4, function () { done(); });
       client1 = io.connect(socketURL, options);
       client2 = io.connect(socketURL, options);
       client3 = io.connect(socketURL, options);
@@ -257,15 +243,11 @@ describe('Scenario 1 :', function () {
     });
 
     it('should create single party when they are `t`, `d`, `d` and `h`', function (done) {
-      var called = 0;
-      var callback = function (data) {
-        called++;
-        if (called === 10 /* = 1+ 2 + 3 +  4*/) {
-          verifyHelper.verifyParty(data.party, 1, 2, 1);
-          expect(helper.getNumberOfParties()).to.be(1);
-          done();
-        }
-      };
+      var callback = helper.createCallbackHook(10, function (data) {
+        verifyHelper.verifyParty(data.party, 1, 2, 1);
+        expect(helper.getNumberOfParties()).to.be(1);
+        done();
+      });
       client1.emit('join', {name: 'foo', role: 't'});
       client2.emit('join', {name: 'bar', role: 'd'});
       client3.emit('join', {name: 'fiz', role: 'd'});
