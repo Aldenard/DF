@@ -1,4 +1,10 @@
 language: node_js
 node_js:
-  - "0.11"
-  - "0.10"
+- '0.11'
+- '0.10'
+deploy:
+  provider: heroku
+  api_key:
+    secure: kUpwrtk3tooffUGOPP3/dJTIgbUTirXnDDliBA5sIYDdLr9B6CmhEgg3rWHYv3vY1sf3FXon+XTUv+loNoj/0WVUt5K3wmNG6iyg1m3kiU1dnxdoZGn0MUUqK6Gw+vIa+anhKZhj6QOKzN9HKmbDvWlC/6PlJNM2rmjoeMcLzpI=
+  app:
+    master: dutyfinder
