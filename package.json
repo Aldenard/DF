@@ -2,6 +2,9 @@
   "name": "DutyFinder",
   "description": "Duty Finder for clink",
   "version": "0.0.1",
+  "engines": {
+    "node": "0.10.x"
+  },
   "scripts": {
     "test": "make test"
   },
