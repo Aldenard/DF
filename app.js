@@ -21,8 +21,9 @@ app.get('/', function (req, res) {
 // Start Server
 //
 if (!module.parent) {
-  server.listen(config.port);
-  console.log('start listening port #' + config.port);
+  var port = process.env.PORT || config.port;
+  server.listen(port);
+  console.log('start listening port #' + port);
 }
 
 //
