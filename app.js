@@ -17,6 +17,8 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
+console.log('log test');
+
 //
 // Start Server
 //
