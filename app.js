@@ -2,8 +2,8 @@
 // Modules
 //
 var app    = require('express')();
-var server = module.exports = require('http').Server(app);
-var io     = require('socket.io')(server);
+var server = module.exports = require('http').createServer(app);
+var io     = require('socket.io').listen(server);
 
 //
 // Variables
