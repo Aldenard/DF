@@ -13,6 +13,7 @@ DF = Duty Finder
 - accept
 
 ### Server to Client
+- connect (socket.io original)
 - joined
 - updated
 - matched
@@ -21,7 +22,7 @@ DF = Duty Finder
 
 ## Data Format
 
-### Join
+### join
 ```js
 {
   name: "name",
@@ -30,7 +31,7 @@ DF = Duty Finder
 ```
 
 
-### Updated
+### updated
 ```js
 {
   party: {
@@ -41,7 +42,7 @@ DF = Duty Finder
 };
 ```
 
-### Accepted
+### accepted
 ```js
 {
   players: ["list", "of", "name"]
