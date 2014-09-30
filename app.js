@@ -2,8 +2,8 @@
 // Modules
 //
 var app    = require('express')();
-var server = module.exports = require('http').createServer(app);
-var io     = require('socket.io').listen(server);
+var server = module.exports = require('http').Server(app);
+var io     = require('socket.io')(server);
 
 //
 // Variables
@@ -16,8 +16,6 @@ var config = require('./config.json');
 app.get('/', function (req, res) {
   res.send('Hello World!');
 });
-
-console.log('log test');
 
 //
 // Start Server
